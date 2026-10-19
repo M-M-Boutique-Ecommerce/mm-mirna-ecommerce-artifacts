@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Secuencia de Autenticación, Seguridad y Recuperación de Claves",
+    "output": "dist/05-auth-security-sequence.html",
+    "viewBox": [1100, 860],
+    "column_fit": "spread",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "user", "type": "external", "label": "Usuario / Admin", "sublabel": "Navegador web" },
+    { "id": "client", "type": "frontend", "label": "Frontend App", "sublabel": "Next.js / Angular" },
+    { "id": "api", "type": "backend", "label": "Auth Controller", "sublabel": "NestJS 10 REST" },
+    { "id": "guard", "type": "security", "label": "Security Core", "sublabel": "JWT & Bcrypt" },
+    { "id": "db", "type": "database", "label": "PostgreSQL 16", "sublabel": "users table" },
+    { "id": "resend", "type": "cloud", "label": "Resend API", "sublabel": "Email transaccional" }
+  ],
+  "segments": [
+    { "from": 150, "to": 350, "label": "1. Inicio de Sesión y Emisión de JWT" },
+    { "from": 370, "to": 540, "label": "2. Solicitud de Recuperación de Contraseña" },
+    { "from": 560, "to": 725, "label": "3. Validación de Token y Cifrado Seguro" }
+  ],
+  "messages": [
+    { "id": "m1", "from": "user", "to": "client", "y": 165, "label": "Ingresa credenciales (email + clave)", "variant": "default" },
+    { "id": "m2", "from": "client", "to": "api", "y": 200, "label": "POST /auth/login", "variant": "emphasis" },
+    { "id": "m3", "from": "api", "to": "db", "y": 235, "label": "SELECT user BY email", "variant": "default" },
+    { "id": "m4", "from": "db", "to": "api", "y": 270, "label": "Retorna usuario + hash", "variant": "return" },
+    { "id": "m5", "from": "api", "to": "guard", "y": 305, "label": "bcrypt.compare() & firma JWT", "variant": "security" },
+    { "id": "m6", "from": "api", "to": "client", "y": 340, "label": "200 OK + JWT Bearer Token", "variant": "return" },
+
+    { "id": "m7", "from": "user", "to": "client", "y": 385, "label": "Clic en 'Olvidé mi contraseña'", "variant": "default" },
+    { "id": "m8", "from": "client", "to": "api", "y": 420, "label": "POST /auth/forgot-password", "variant": "emphasis" },
+    { "id": "m9", "from": "api", "to": "db", "y": 455, "label": "Genera crypto reset token (expira 1h)", "variant": "security" },
+    { "id": "m10", "from": "api", "to": "resend", "y": 490, "label": "Enviar email con enlace de reset", "variant": "emphasis" },
+    { "id": "m11", "from": "resend", "to": "user", "y": 525, "label": "Entrega de email con botón seguro", "variant": "return" },
+
+    { "id": "m12", "from": "user", "to": "client", "y": 570, "label": "Abre enlace e ingresa nueva clave", "variant": "default" },
+    { "id": "m13", "from": "client", "to": "api", "y": 605, "label": "POST /auth/reset-password", "variant": "emphasis" },
+    { "id": "m14", "from": "api", "to": "guard", "y": 640, "label": "Valida firma de token y hashea clave", "variant": "security" },
+    { "id": "m15", "from": "api", "to": "db", "y": 675, "label": "UPDATE password_hash & revoke token", "variant": "emphasis" },
+    { "id": "m16", "from": "api", "to": "client", "y": 710, "label": "200 Contraseña actualizada con éxito", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "client", "from": 195, "to": 345, "type": "frontend" },
+    { "participant": "api", "from": 200, "to": 342, "type": "backend" },
+    { "participant": "guard", "from": 300, "to": 315, "type": "security" },
+    { "participant": "db", "from": 230, "to": 275, "type": "database" },
+
+    { "participant": "client", "from": 415, "to": 530, "type": "frontend" },
+    { "participant": "api", "from": 420, "to": 500, "type": "backend" },
+    { "participant": "db", "from": 450, "to": 465, "type": "database" },
+    { "participant": "resend", "from": 485, "to": 530, "type": "cloud" },
+
+    { "participant": "client", "from": 600, "to": 715, "type": "frontend" },
+    { "participant": "api", "from": 605, "to": 712, "type": "backend" },
+    { "participant": "guard", "from": 635, "to": 650, "type": "security" },
+    { "participant": "db", "from": 670, "to": 685, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Criptografía y Contraseñas",
+      "items": [
+        "Ninguna contraseña se almacena en texto plano en la base de datos",
+        "Se utiliza Bcrypt con 10 rondas de salt criptográfico irreversible",
+        "Resistente a ataques de fuerza bruta y filtraciones de bases de datos"
+      ]
+    },
+    {
+      "dot": "rose",
+      "title": "Protección de Sesión con JWT",
+      "items": [
+        "Cada petición protegida se firma y valida mediante Passport JWT Strategy",
+        "Los tokens tienen expiración estricta y contienen el rol del usuario (ADMIN o CLIENTE)",
+        "El panel CMS de Angular rechaza cualquier intento no autorizado sin sobrecargar la base de datos"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Tokens Efímeros de Recuperación",
+      "items": [
+        "Los enlaces de olvido de clave usan tokens criptográficos de un solo uso con expiración de 1 hora",
+        "Al utilizarse, el token queda inmediatamente invalidado en base de datos para impedir reutilizaciones",
+        "El correo transaccional se entrega con 99.9% de entregabilidad mediante la infraestructura de Resend"
+      ]
+    }
+  ]
+}

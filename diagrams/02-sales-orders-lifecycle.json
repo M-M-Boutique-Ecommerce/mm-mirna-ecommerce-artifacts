@@ -1,0 +1,61 @@
+{
+  "schema_version": 3,
+  "diagram_type": "lifecycle",
+  "meta": {
+    "title": "Ciclo de Vida de Órdenes de Venta (Sales Orders)",
+    "output": "dist/02-sales-orders-lifecycle.html",
+    "animation": "trace",
+    "quality_profile": "showcase"
+  },
+  "mainPath": ["draft", "pending", "paid", "processing", "shipped", "delivered"],
+  "states": [
+    { "id": "draft", "type": "start", "label": "Draft", "sublabel": "Carrito", "tag": "inicio", "step": "01" },
+    { "id": "pending", "type": "waiting", "label": "Pending", "sublabel": "Espera pago", "tag": "pago", "step": "02" },
+    { "id": "paid", "type": "decision", "label": "Paid", "sublabel": "Pago OK", "tag": "stock", "step": "03" },
+    { "id": "processing", "type": "active", "label": "Processing", "sublabel": "Empaque", "tag": "picking", "step": "04" },
+    { "id": "shipped", "type": "active", "label": "Shipped", "sublabel": "En tránsito", "tag": "envío", "step": "05" },
+    { "id": "delivered", "type": "success", "label": "Delivered", "sublabel": "Entregado", "tag": "fin", "step": "06" },
+    { "id": "cancelled", "type": "failure", "label": "Cancelled", "sublabel": "Anulado", "tag": "anulado" }
+  ],
+  "transitions": [
+    { "id": "draft-pending", "from": "draft", "to": "pending", "label": "Checkout" },
+    { "id": "pending-paid", "from": "pending", "to": "paid", "label": "Valida CMS" },
+    { "id": "paid-processing", "from": "paid", "to": "processing", "label": "Empacar" },
+    { "id": "processing-shipped", "from": "processing", "to": "shipped", "label": "Despacho" },
+    { "id": "shipped-delivered", "from": "shipped", "to": "delivered", "label": "Entrega" },
+    { "id": "pending-cancelled", "from": "pending", "to": "cancelled", "label": "Rechazado", "variant": "security" },
+    { "id": "paid-cancelled", "from": "paid", "to": "cancelled", "label": "Reembolso", "variant": "security" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Ruta Principal de Ventas",
+      "items": [
+        "El cliente genera la orden desde la tienda Next.js pasando de Draft a Pending",
+        "El cliente reporta su comprobante bancario (Pago Móvil, Zelle o Transferencia)",
+        "El administrador verifica el dinero en cuenta bancaria y pasa la orden a Paid",
+        "El equipo de almacén empaca la prenda y asigna la guía de Zoom/MRW (Shipped)",
+        "El cliente confirma la recepción final de la prenda en destino (Delivered)"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Garantía de Inventario (Kardex)",
+      "items": [
+        "REGLA CRÍTICA: El stock físico NO se descuenta en Draft ni en Pending",
+        "El descuento automático de stock (Kardex OUT) ocurre ÚNICAMENTE al marcar Paid",
+        "Si una orden en estado Paid se anula, el sistema genera automáticamente un Kardex IN para reponer las prendas"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Notificaciones por Email (Resend)",
+      "items": [
+        "En cada transición de estado, NestJS dispara un correo transaccional vía Resend",
+        "Pending: Envío de resumen de orden y datos bancarios para transferencia",
+        "Paid: Confirmación de pago recibido con factura y detalle de compra",
+        "Shipped: Envío del número de guía y empresa de encomienda para seguimiento"
+      ]
+    }
+  ]
+}

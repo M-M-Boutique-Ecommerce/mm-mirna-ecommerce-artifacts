@@ -1,0 +1,27 @@
+{
+  "name": "mm-mirna-ecommerce-artifacts",
+  "version": "1.0.0",
+  "description": "Visual architecture and business use-case artifacts for MM Mirna Boutique using Archify",
+  "main": "index.html",
+  "type": "module",
+  "scripts": {
+    "render:01": "node engine/bin/archify.mjs render architecture diagrams/01-global-architecture.json dist/01-global-architecture.html",
+    "render:02": "node engine/bin/archify.mjs render lifecycle diagrams/02-sales-orders-lifecycle.json dist/02-sales-orders-lifecycle.html",
+    "render:03": "node engine/bin/archify.mjs render workflow diagrams/03-checkout-payment-workflow.json dist/03-checkout-payment-workflow.html",
+    "render:04": "node engine/bin/archify.mjs render workflow diagrams/04-catalog-inventory-workflow.json dist/04-catalog-inventory-workflow.html",
+    "render:05": "node engine/bin/archify.mjs render sequence diagrams/05-auth-security-sequence.json dist/05-auth-security-sequence.html",
+    "render:06": "node engine/bin/archify.mjs render architecture diagrams/06-deployment-infrastructure.json dist/06-deployment-infrastructure.html",
+    "build": "npm run render:01 && npm run render:02 && npm run render:03 && npm run render:04 && npm run render:05 && npm run render:06",
+    "serve": "npx serve dist"
+  },
+  "keywords": [
+    "archify",
+    "architecture",
+    "diagrams",
+    "documentation",
+    "ecommerce",
+    "mm-boutique"
+  ],
+  "author": "MM Mirna Boutique",
+  "license": "UNLICENSED"
+}

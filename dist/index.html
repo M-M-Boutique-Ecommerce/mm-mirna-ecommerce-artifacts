@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MM Mirna Boutique — Portal de Arquitectura y Documentación Técnica</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #0b0f17;
+      --bg-card: rgba(18, 24, 38, 0.85);
+      --bg-card-hover: rgba(26, 35, 54, 0.95);
+      --border: rgba(255, 255, 255, 0.08);
+      --border-focus: rgba(212, 175, 55, 0.4);
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --gold-glow: rgba(212, 175, 55, 0.15);
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --emerald: #10b981;
+      --cyan: #06b6d4;
+      --violet: #8b5cf6;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(212, 175, 55, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 60%, rgba(14, 165, 233, 0.06) 0%, transparent 40%),
+        radial-gradient(circle at 50% 90%, rgba(139, 92, 246, 0.05) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    .container {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    /* HEADER */
+    header {
+      padding: 60px 0 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    .brand-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      border-radius: 9999px;
+      background: var(--gold-glow);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: var(--gold-light);
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .brand-tag span {
+      display: inline-block;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+    }
+
+    h1 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 3.2rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, var(--gold-light) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 0 auto 32px;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+      font-weight: 300;
+    }
+
+    .stakeholder-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      padding: 8px 20px;
+      border-radius: 12px;
+      font-size: 0.9rem;
+      color: #cbd5e1;
+    }
+
+    .stakeholder-badge strong {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    /* SECTION TITLES */
+    .section-header {
+      margin: 60px 0 30px;
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 16px;
+    }
+
+    .section-header h2 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.2rem;
+      font-weight: 600;
+      color: var(--gold-light);
+    }
+
+    .section-header span {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* DIAGRAM GRID */
+    .diagram-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .diagram-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 28px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      backdrop-filter: blur(16px);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+    }
+
+    .diagram-card:hover {
+      background: var(--bg-card-hover);
+      border-color: var(--border-focus);
+      transform: translateY(-4px);
+      box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.7), 0 0 20px var(--gold-glow);
+    }
+
+    .card-top {
+      margin-bottom: 20px;
+    }
+
+    .card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .diagram-type {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .type-architecture { background: rgba(6, 182, 212, 0.15); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+    .type-lifecycle { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(52, 211, 153, 0.3); }
+    .type-workflow { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(251, 191, 36, 0.3); }
+    .type-sequence { background: rgba(139, 92, 246, 0.15); color: #a78bfa; border: 1px solid rgba(167, 139, 250, 0.3); }
+
+    .card-number {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: rgba(255, 255, 255, 0.2);
+    }
+
+    .diagram-card h3 {
+      font-size: 1.35rem;
+      font-weight: 600;
+      margin-bottom: 10px;
+      color: #ffffff;
+      line-height: 1.3;
+    }
+
+    .diagram-card p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 18px;
+    }
+
+    .pill-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 24px;
+    }
+
+    .pill {
+      font-size: 0.75rem;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      padding: 3px 8px;
+      border-radius: 6px;
+      color: #cbd5e1;
+    }
+
+    .card-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      width: 100%;
+      padding: 12px 18px;
+      background: rgba(212, 175, 55, 0.12);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: var(--gold-light);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.92rem;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+    }
+
+    .card-button:hover {
+      background: var(--gold);
+      color: #000000;
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.5);
+    }
+
+    .card-button svg {
+      width: 16px;
+      height: 16px;
+      transition: transform 0.2s ease;
+    }
+
+    .card-button:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* TECH STACK TABLE & EXPLANATIONS */
+    .stack-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 20px;
+      margin-top: 24px;
+    }
+
+    .stack-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+    }
+
+    .stack-card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .stack-icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .icon-next { background: #000; color: #fff; border: 1px solid #333; }
+    .icon-angular { background: #dd0031; color: #fff; }
+    .icon-nest { background: #ea2845; color: #fff; }
+    .icon-pg { background: #336791; color: #fff; }
+    .icon-resend { background: #000; color: #fff; border: 1px solid #444; }
+    .icon-imagekit { background: #007aff; color: #fff; }
+    .icon-railway { background: #13111c; color: #f2f2f2; border: 1px solid #2b2638; }
+
+    .stack-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .stack-card p {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.5;
+    }
+
+    /* FAQ / EXECUTIVE GUIDE */
+    .guide-box {
+      background: linear-gradient(135deg, rgba(18, 24, 38, 0.9) 0%, rgba(24, 33, 50, 0.9) 100%);
+      border: 1px solid rgba(212, 175, 55, 0.25);
+      border-radius: 20px;
+      padding: 36px;
+      margin: 40px 0;
+    }
+
+    .guide-box h3 {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem;
+      color: var(--gold-light);
+      margin-bottom: 16px;
+    }
+
+    .guide-item {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .guide-item:last-child {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      border-bottom: none;
+    }
+
+    .guide-item h4 {
+      font-size: 1.05rem;
+      color: #ffffff;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .guide-item p {
+      font-size: 0.92rem;
+      color: #94a3b8;
+    }
+
+    footer {
+      padding: 60px 0 40px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+
+    footer a {
+      color: var(--gold);
+      text-decoration: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <div class="brand-tag">
+        <span></span>
+        Documentación Interactiva & Arquitectura
+      </div>
+      <h1>MM Mirna Boutique E-Commerce</h1>
+      <p class="lead">
+        Portal visual de casos de uso, arquitectura de software, infraestructura y flujos de negocio generado con tecnología Archify.
+      </p>
+      <div class="stakeholder-badge">
+        <span>Preparado especialmente para nuestros socios directores:</span>
+        <strong>Julito</strong> y <strong>René</strong>
+      </div>
+    </header>
+
+    <!-- SECTION: DIAGRAMS -->
+    <div class="section-header">
+      <h2>Diagramas Interactivos del Sistema</h2>
+      <span>6 Vistas Autónomas Compiladas</span>
+    </div>
+
+    <div class="diagram-grid">
+      <!-- CARD 01 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-architecture">Arquitectura</span>
+            <span class="card-number">01</span>
+          </div>
+          <h3>Topología Global del Sistema</h3>
+          <p>
+            Visión panorámica de toda la solución: Storefront (Next.js), Panel Administrativo (Angular), API Backend (NestJS), Base de Datos PostgreSQL y servicios SaaS integrados.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Next.js 15</span>
+            <span class="pill">Angular 17</span>
+            <span class="pill">NestJS 10</span>
+            <span class="pill">PostgreSQL 16</span>
+            <span class="pill">ImageKit</span>
+            <span class="pill">Resend</span>
+          </div>
+        </div>
+        <a href="01-global-architecture.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      <!-- CARD 02 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-lifecycle">Ciclo de Vida</span>
+            <span class="card-number">02</span>
+          </div>
+          <h3>Ciclo de Vida de Órdenes (Sales Orders)</h3>
+          <p>
+            Máquina de estados estricta desde que el cliente arma el carrito hasta la entrega final, detallando exactamente en qué momento se descuenta y se repone el inventario físico en Kardex.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Draft</span>
+            <span class="pill">Pending</span>
+            <span class="pill">Paid (Kardex OUT)</span>
+            <span class="pill">Processing</span>
+            <span class="pill">Shipped</span>
+            <span class="pill">Delivered</span>
+          </div>
+        </div>
+        <a href="02-sales-orders-lifecycle.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      <!-- CARD 03 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-workflow">Flujo de Trabajo</span>
+            <span class="card-number">03</span>
+          </div>
+          <h3>Checkout y Conciliación de Pagos</h3>
+          <p>
+            Flujo end-to-end de cobranza: el cliente reporta su comprobante (Pago Móvil, Zelle o Transferencia), el administrador lo audita en el CMS y se confirman los fondos en banco.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Pago Móvil</span>
+            <span class="pill">Zelle</span>
+            <span class="pill">Auditoría CMS</span>
+            <span class="pill">Transacción ACID</span>
+            <span class="pill">Recibo Email</span>
+          </div>
+        </div>
+        <a href="03-checkout-payment-workflow.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      <!-- CARD 04 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-workflow">Flujo de Trabajo</span>
+            <span class="card-number">04</span>
+          </div>
+          <h3>Catálogo, Precios BCV e Inventario Kardex</h3>
+          <p>
+            Cómo se cargan las prendas, subida de fotos optimizadas a ImageKit CDN, fijación de precios en USD + sincronización con BCV (Dolarify) y libro contable Kardex.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Variantes & SKU</span>
+            <span class="pill">WebP CDN</span>
+            <span class="pill">Tasa BCV + 20% REF</span>
+            <span class="pill">Kardex IN / OUT</span>
+            <span class="pill">PDF Auditoría</span>
+          </div>
+        </div>
+        <a href="04-catalog-inventory-workflow.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      <!-- CARD 05 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-sequence">Secuencia</span>
+            <span class="card-number">05</span>
+          </div>
+          <h3>Autenticación y Recuperación de Claves</h3>
+          <p>
+            Diagrama de secuencia paso a paso: inicio de sesión seguro mediante tokens JWT Bearer, hashing con sal Bcrypt y proceso de recuperación con enlaces criptográficos efímeros vía Resend.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Passport JWT</span>
+            <span class="pill">Bcrypt (10 Salt)</span>
+            <span class="pill">Tokens Criptográficos</span>
+            <span class="pill">Expiración 1h</span>
+            <span class="pill">Anti-Bruteforce</span>
+          </div>
+        </div>
+        <a href="05-auth-security-sequence.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+
+      <!-- CARD 06 -->
+      <div class="diagram-card">
+        <div class="card-top">
+          <div class="card-meta">
+            <span class="diagram-type type-architecture">Infraestructura</span>
+            <span class="card-number">06</span>
+          </div>
+          <h3>Despliegue e Infraestructura Cloud (Railway)</h3>
+          <p>
+            Mapeo de la infraestructura productiva: Contenedores Docker, servidor Caddy de alto rendimiento para el CMS, red privada interna y aislamiento de base de datos sin puertos públicos.
+          </p>
+          <div class="pill-list">
+            <span class="pill">Railway Cloud</span>
+            <span class="pill">Docker Multi-stage</span>
+            <span class="pill">Caddy Server</span>
+            <span class="pill">Private Mesh Net</span>
+            <span class="pill">SSL Automatizado</span>
+          </div>
+        </div>
+        <a href="06-deployment-infrastructure.html" class="card-button" target="_blank">
+          Abrir Diagrama Interactivo
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <!-- SECTION: TECH STACK BREAKDOWN -->
+    <div class="section-header">
+      <h2>Tecnologías Elegidas y Justificación Técnica</h2>
+      <span>Stack Tecnológico de Nivel Empresarial</span>
+    </div>
+
+    <div class="stack-grid">
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-next">N</div>
+          <div>
+            <h4>Next.js 15 + React 19</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Tienda Online (Storefront)</span>
+          </div>
+        </div>
+        <p>
+          Renderizado híbrido del lado del servidor (SSR) para indexación inmediata en Google (SEO), velocidad extrema en móviles y carrito reactivo con Zustand.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-angular">A</div>
+          <div>
+            <h4>Angular 17 + Material</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Panel de Administración (CMS)</span>
+          </div>
+        </div>
+        <p>
+          Framework corporativo con inyección de dependencias y tipado estricto. Ideal para gestión de inventario, auditoría de pagos y formularios complejos con cero margen de error.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-nest">N</div>
+          <div>
+            <h4>NestJS 10 + TypeORM</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Backend API REST</span>
+          </div>
+        </div>
+        <p>
+          Arquitectura modular limpia y escalable. Manejo de transacciones ACID para asegurar que el dinero y el inventario Kardex siempre cuadren a la perfección.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-pg">🐘</div>
+          <div>
+            <h4>PostgreSQL 16</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Base de Datos Relacional</span>
+          </div>
+        </div>
+        <p>
+          El motor de base de datos relacional más robusto del mercado. Aloja esquemas de productos, variantes, clientes, órdenes, pagos y libros contables de inventario.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-resend">R</div>
+          <div>
+            <h4>Resend</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Emails Transaccionales</span>
+          </div>
+        </div>
+        <p>
+          Infraestructura moderna de entrega de correo con 99.9% de entregabilidad. Notifica compras, recibos, números de guía y enlaces de seguridad sin caer en spam.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-imagekit">IK</div>
+          <div>
+            <h4>ImageKit CDN</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Optimización Multimedia</span>
+          </div>
+        </div>
+        <p>
+          Almacenamiento y CDN global. Convierte fotos de vestidos y prendas automáticamente a formato WebP ligero, logrando que el catálogo cargue en menos de 1 segundo.
+        </p>
+      </div>
+
+      <div class="stack-card">
+        <div class="stack-card-header">
+          <div class="stack-icon icon-railway">Ry</div>
+          <div>
+            <h4>Railway PaaS</h4>
+            <span style="font-size: 0.75rem; color: var(--gold);">Hosting e Infraestructura</span>
+          </div>
+        </div>
+        <p>
+          Plataforma de despliegue continuo con contenedores Docker aislados, certificados SSL automáticos y red privada interna para proteger la base de datos contra accesos no autorizados.
+        </p>
+      </div>
+    </div>
+
+    <!-- SECTION: EXECUTIVE FAQ -->
+    <div class="guide-box">
+      <h3>Guía Ejecutiva para Julito y René</h3>
+      
+      <div class="guide-item">
+        <h4>1. ¿Cómo se protege el inventario físico cuando una clienta compra?</h4>
+        <p>
+          El inventario físico NO se descuenta cuando una clienta agrega prendas al carrito o genera una orden en estado "Pending". El descuento automático en el libro Kardex ocurre <strong>únicamente cuando el administrador valida y aprueba el pago</strong> pasando la orden a estado "Paid". Si una orden pagada se llega a cancelar por cualquier motivo, el sistema genera automáticamente un contra-movimiento de reposición ("IN") en Kardex.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h4>2. ¿Cómo funciona el cobro en bolívares y dólares?</h4>
+        <p>
+          Todos los precios base de MM Boutique se fijan internamente en Dólares (USD). Gracias a la integración con el servicio Dolarify, el sistema consulta diariamente la tasa oficial del Banco Central de Venezuela (BCV) y aplica la política comercial estipulada (+20% REF en bolívares) para emitir el monto exacto a pagar por Pago Móvil o transferencia nacional, protegiendo el margen del negocio.
+        </p>
+      </div>
+
+      <div class="guide-item">
+        <h4>3. ¿Dónde y cómo pueden consultar los diagramas interactivos?</h4>
+        <p>
+          Cada uno de los 6 enlaces superiores abre un diagrama interactivo completo compilado en HTML autónomo. Pueden hacer zoom, arrastrar la vista, activar animaciones de flujo en tiempo real (modo Trace), inspeccionar cada componente haciendo clic sobre él y cambiar entre tema oscuro (Dark) y claro (Light).
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      <p>
+        MM Mirna Boutique E-Commerce &copy; 2026. Documentación técnica compilada con Archify Engine.
+      </p>
+    </footer>
+  </div>
+
+</body>
+</html>

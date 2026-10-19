@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "Infraestructura de Despliegue en Producción (Railway & SaaS)",
+    "output": "dist/06-deployment-infrastructure.html",
+    "visual_preset": "blueprint",
+    "animation": "trace",
+    "quality_profile": "showcase",
+    "engineering_profile": "deployment-ownership"
+  },
+  "components": [
+    { "id": "users_web", "type": "external", "label": "Clientes y Staff", "sublabel": "Navegadores y Móviles", "pos": [40, 260], "size": [126, 62] },
+    { "id": "railway_edge", "type": "cloud", "label": "Railway Edge Ingress", "sublabel": "SSL / TLS automático", "pos": [210, 260], "size": [130, 62], "tag": "proxy" },
+    { "id": "storefront_container", "type": "frontend", "label": "Next.js 15 Storefront", "sublabel": "Node.js 22 SSR :3000", "pos": [380, 160], "size": [146, 62], "tag": "tienda" },
+    { "id": "cms_container", "type": "frontend", "label": "Angular 17 + Caddy", "sublabel": "Caddy Web Server :80", "pos": [380, 360], "size": [146, 62], "tag": "admin" },
+    { "id": "api_container", "type": "backend", "label": "NestJS 10 Core API", "sublabel": "Node.js 22 runtime :3001", "pos": [570, 260], "size": [146, 62], "tag": "backend" },
+    { "id": "postgres_service", "type": "database", "label": "PostgreSQL 16 DB", "sublabel": "Railway Managed Volume", "pos": [840, 260], "size": [146, 62], "tag": "base datos" },
+    { "id": "imagekit_saas", "type": "cloud", "label": "ImageKit Global CDN", "sublabel": "WebP auto / SSL media", "pos": [1060, 160], "size": [146, 60], "tag": "media" },
+    { "id": "dolarify_saas", "type": "cloud", "label": "Dolarify BCV API", "sublabel": "Cotización oficial diaria", "pos": [1060, 260], "size": [146, 60], "tag": "divisas" },
+    { "id": "resend_saas", "type": "cloud", "label": "Resend Email API", "sublabel": "DKIM / SPF verificado", "pos": [1060, 360], "size": [146, 60], "tag": "emails" }
+  ],
+  "boundaries": [
+    { "kind": "region", "label": "Railway Cloud PaaS (Producción)", "wraps": ["railway_edge", "storefront_container", "cms_container", "api_container", "postgres_service"], "pad": 22 },
+    { "kind": "security-group", "label": "Red Privada Interna (Railway Private Mesh)", "wraps": ["api_container", "postgres_service"], "pad": 14 },
+    { "kind": "region", "label": "Servicios SaaS Especializados", "wraps": ["imagekit_saas", "dolarify_saas", "resend_saas"], "pad": 18 }
+  ],
+  "connections": [
+    { "from": "users_web", "to": "railway_edge", "label": "HTTPS :443", "variant": "emphasis" },
+    { "from": "railway_edge", "to": "storefront_container", "label": "tienda.mmboutique.com", "variant": "emphasis" },
+    { "from": "railway_edge", "to": "cms_container", "label": "admin.mmboutique.com", "variant": "emphasis" },
+    { "from": "storefront_container", "to": "api_container", "label": "REST API", "variant": "emphasis" },
+    { "from": "cms_container", "to": "api_container", "label": "Admin API", "variant": "emphasis" },
+    { "from": "api_container", "to": "postgres_service", "label": "TCP :5432 (Privado)", "variant": "emphasis" },
+    { "from": "api_container", "to": "imagekit_saas", "label": "Upload Media", "variant": "dashed" },
+    { "from": "api_container", "to": "dolarify_saas", "label": "Sync Tasa BCV", "variant": "dashed" },
+    { "from": "api_container", "to": "resend_saas", "label": "Send Transaccional", "variant": "dashed" }
+  ],
+  "cards": [
+    {
+      "dot": "cyan",
+      "title": "Arquitectura de Contenedores en Railway",
+      "items": [
+        "Despliegues continuos automáticos por Git push con cero tiempo de inactividad (Zero Downtime)",
+        "Railway provee certificados SSL automáticos y balanceador de carga global en el Edge",
+        "Aislamiento completo de procesos con reinicios automáticos ante fallos (Auto-healing)"
+      ]
+    },
+    {
+      "dot": "emerald",
+      "title": "Servidor Caddy de Alto Rendimiento para CMS",
+      "items": [
+        "El panel de administración en Angular 17 se compila en un multi-stage Dockerfile",
+        "Se sirve a través de Caddy Server, garantizando soporte nativo HTTP/2 y compresión Gzip/Zstandard",
+        "Consumo mínimo de memoria RAM (< 25MB) para mantener los costos de infraestructura al mínimo"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Seguridad de Red y Persistencia de Datos",
+      "items": [
+        "PostgreSQL 16 NO tiene puertos públicos expuestos a Internet para prevenir ciberataques",
+        "La comunicación entre NestJS y la base de datos viaja por la red interna encriptada (.railway.internal)",
+        "Volúmenes persistentes con respaldos automáticos diarios gestionados por Railway"
+      ]
+    }
+  ]
+}

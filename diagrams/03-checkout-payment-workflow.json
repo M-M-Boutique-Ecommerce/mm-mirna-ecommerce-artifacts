@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Flujo de Checkout y Verificación de Pagos",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "dist/03-checkout-payment-workflow.html"
+  },
+  "lanes": [
+    { "id": "shopper", "label": "Cliente (Next.js 15 Storefront)" },
+    { "id": "api", "label": "Core API (NestJS + TypeORM)" },
+    { "id": "admin", "label": "Panel Admin (Angular 17 CMS)" },
+    { "id": "database", "label": "Persistencia & Kardex (PostgreSQL)" },
+    { "id": "services", "label": "Servicios SaaS (Resend & ImageKit)" }
+  ],
+  "phases": [
+    { "id": "p1", "label": "1. Creación de Orden", "fromCol": 0, "toCol": 1 },
+    { "id": "p2", "label": "2. Pago y Reporte", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "p3", "label": "3. Conciliación y Kardex", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": [
+    "cart_checkout",
+    "create_order",
+    "pay_report",
+    "attach_payment",
+    "admin_review",
+    "approve_order",
+    "kardex_deduct"
+  ],
+  "nodes": [
+    { "id": "cart_checkout", "lane": "shopper", "col": 0, "type": "frontend", "label": "Iniciar Checkout", "sublabel": "Dirección y método", "width": 132 },
+    { "id": "create_order", "lane": "api", "col": 1, "type": "backend", "label": "Crear Orden", "sublabel": "Status: Pending", "width": 132 },
+    { "id": "notify_order", "lane": "services", "col": 2, "type": "external", "label": "Email de Orden", "sublabel": "Datos bancarios Resend", "width": 132 },
+    { "id": "pay_report", "lane": "shopper", "col": 2, "type": "frontend", "label": "Reportar Pago", "sublabel": "Nro referencia / capture", "width": 132 },
+    { "id": "attach_payment", "lane": "api", "col": 3, "type": "backend", "label": "Registrar Pago", "sublabel": "Vincula comprobante", "width": 132 },
+    { "id": "admin_review", "lane": "admin", "col": 4, "type": "frontend", "label": "Revisar en CMS", "sublabel": "Conciliar con banco", "width": 132 },
+    { "id": "approve_order", "lane": "api", "col": 5, "type": "backend", "label": "Aprobar Orden", "sublabel": "Status: Paid", "width": 132 },
+    { "id": "kardex_deduct", "lane": "database", "col": 5, "type": "database", "label": "Kardex OUT", "sublabel": "Deduce stock físico", "tag": "inventario", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "cart_checkout", "to": "create_order", "variant": "emphasis" },
+    { "id": "e2", "from": "create_order", "to": "notify_order", "variant": "dashed" },
+    { "id": "e3", "from": "create_order", "to": "pay_report", "variant": "default" },
+    { "id": "e4", "from": "pay_report", "to": "attach_payment", "variant": "emphasis" },
+    { "id": "e5", "from": "attach_payment", "to": "admin_review", "variant": "default" },
+    { "id": "e6", "from": "admin_review", "to": "approve_order", "variant": "emphasis" },
+    { "id": "e7", "from": "approve_order", "to": "kardex_deduct", "variant": "emphasis", "route": "drop", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Métodos de Pago Multidivisa",
+      "items": [
+        "Pago Móvil / Transferencia Bancaria (Bs calculados a tasa oficial BCV vía Dolarify)",
+        "Zelle / Efectivo en divisas (USD directo)",
+        "El cliente ingresa su referencia o captura para auditoría administrativa inmediata"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Conciliación Segura en CMS",
+      "items": [
+        "Los administradores revisan el comprobante desde Angular CMS contra su cuenta bancaria",
+        "Se previene el fraude validando monto, fecha y número de transacción antes de aprobar",
+        "La aprobación cambia el estado a 'Paid' y activa la preparación en almacén"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Integridad de Stock Transaccional",
+      "items": [
+        "El descuento de stock es atómico mediante TypeORM Transactions en PostgreSQL",
+        "Cada variante (color/talla) registra un movimiento Kardex 'OUT' con fecha y responsable",
+        "Garantiza que nunca se venda una prenda que no esté físicamente en el inventario"
+      ]
+    }
+  ]
+}

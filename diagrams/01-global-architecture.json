@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "diagram_type": "architecture",
+  "meta": {
+    "title": "M&M Boutique - Arquitectura Global del Sistema",
+    "subtitle": "Ecosistema Tecnológico: NestJS, Angular, Next.js, PostgreSQL, Railway, ImageKit y Resend",
+    "output": "dist/01-global-architecture.html",
+    "quality_profile": "showcase"
+  },
+  "components": [
+    {
+      "id": "shopper",
+      "type": "external",
+      "label": "Cliente Tienda",
+      "sublabel": "Navegador Web / Mobile",
+      "pos": [40, 200],
+      "size": [140, 60],
+      "tag": "E-Commerce"
+    },
+    {
+      "id": "admin_user",
+      "type": "external",
+      "label": "Administrador / Ventas",
+      "sublabel": "Personal Boutique",
+      "pos": [40, 380],
+      "size": [140, 60],
+      "tag": "Backoffice"
+    },
+    {
+      "id": "storefront",
+      "type": "frontend",
+      "label": "Storefront Web",
+      "sublabel": "Next.js 15 + React 19",
+      "pos": [250, 200],
+      "size": [160, 64],
+      "tag": "Tailwind 4 + Zustand"
+    },
+    {
+      "id": "cms",
+      "type": "frontend",
+      "label": "CMS Administrativo",
+      "sublabel": "Angular 17 + Material",
+      "pos": [250, 380],
+      "size": [160, 64],
+      "tag": "Tailwind + RxJS"
+    },
+    {
+      "id": "auth_guard",
+      "type": "security",
+      "label": "Autenticación & Guard",
+      "sublabel": "Passport JWT + Roles",
+      "pos": [490, 140],
+      "size": [170, 60],
+      "tag": "RBAC + Hash Bcrypt"
+    },
+    {
+      "id": "backend_api",
+      "type": "backend",
+      "label": "Backend Core API",
+      "sublabel": "NestJS 10 + TypeORM",
+      "pos": [490, 290],
+      "size": [170, 70],
+      "tag": "REST + DTO Validation"
+    },
+    {
+      "id": "railway_host",
+      "type": "cloud",
+      "label": "Plataforma Railway",
+      "sublabel": "Contenedores Docker",
+      "pos": [490, 460],
+      "size": [170, 60],
+      "tag": "CI/CD & SSL Automático"
+    },
+    {
+      "id": "imagekit_cdn",
+      "type": "cloud",
+      "label": "ImageKit CDN",
+      "sublabel": "Almacenamiento Multimedia",
+      "pos": [740, 140],
+      "size": [170, 60],
+      "tag": "WebP + Auto Optimize"
+    },
+    {
+      "id": "database",
+      "type": "database",
+      "label": "PostgreSQL 16",
+      "sublabel": "Base de Datos Relacional",
+      "pos": [740, 290],
+      "size": [170, 70],
+      "tag": "Kardex + Órdenes + Catálogo"
+    },
+    {
+      "id": "resend_api",
+      "type": "external",
+      "label": "Resend API / SMTP",
+      "sublabel": "Correos Transaccionales",
+      "pos": [970, 220],
+      "size": [160, 60],
+      "tag": "Recuperación & Bienvenida"
+    },
+    {
+      "id": "dolarify_api",
+      "type": "external",
+      "label": "Dolarify API",
+      "sublabel": "Tasa de Cambio BCV",
+      "pos": [970, 360],
+      "size": [160, 60],
+      "tag": "Sugerencia Precios REF"
+    }
+  ],
+  "boundaries": [
+    {
+      "kind": "region",
+      "label": "Infraestructura Cloud Railway (Producción)",
+      "wraps": ["backend_api", "database", "railway_host"]
+    },
+    {
+      "kind": "security-group",
+      "label": "Capa de Aplicaciones & Frontend",
+      "wraps": ["storefront", "cms"]
+    }
+  ],
+  "connections": [
+    { "id": "shopper-to-storefront", "from": "shopper", "to": "storefront", "label": "HTTPS :443", "variant": "emphasis" },
+    { "id": "admin-to-cms", "from": "admin_user", "to": "cms", "label": "HTTPS :443", "variant": "emphasis" },
+    { "id": "storefront-to-api", "from": "storefront", "to": "backend_api", "label": "API REST /orders", "variant": "default" },
+    { "id": "cms-to-api", "from": "cms", "to": "backend_api", "label": "API REST / JWT Bearer", "variant": "emphasis" },
+    { "id": "api-to-auth", "from": "backend_api", "to": "auth_guard", "label": "valida token", "variant": "security", "fromSide": "top", "toSide": "bottom" },
+    { "id": "api-to-db", "from": "backend_api", "to": "database", "label": "TypeORM / SQL", "variant": "emphasis" },
+    { "id": "api-to-imagekit", "from": "backend_api", "to": "imagekit_cdn", "label": "Upload WebP", "variant": "dashed", "fromSide": "top", "toSide": "bottom" },
+    { "id": "storefront-from-imagekit", "from": "imagekit_cdn", "to": "storefront", "label": "Entrega Imágenes", "variant": "dashed", "fromSide": "left", "toSide": "top" },
+    { "id": "api-to-resend", "from": "backend_api", "to": "resend_api", "label": "Notificaciones Email", "variant": "default" },
+    { "id": "api-to-dolarify", "from": "backend_api", "to": "dolarify_api", "label": "Consulta Tasa Oficial", "variant": "dashed" },
+    { "id": "railway-deploys-api", "from": "railway_host", "to": "backend_api", "label": "Ejecuta Contenedor", "variant": "dashed", "fromSide": "top", "toSide": "bottom" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Frontends Modernos & Especializados",
+      "items": [
+        "Storefront en Next.js 15: Optimizado para SEO, Core Web Vitals, ultra rápido con React Server Components y Tailwind v4.",
+        "CMS Administrativo en Angular 17: Dashboard robusto para gestión de inventario, catálogo, reportes PDF y auditoría de ventas."
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Backend NestJS & Persistencia",
+      "items": [
+        "Arquitectura modular NestJS con TypeORM y PostgreSQL 16.",
+        "Kardex transaccional estricto: control de entradas y salidas de stock para evitar descuadres.",
+        "Doble fijación de precios: Precio Base en divisas (USD/USDT) + Precio REF calculado para moneda nacional."
+      ]
+    },
+    {
+      "dot": "violet",
+      "title": "Servicios Cloud Integrados",
+      "items": [
+        "Railway: Hosting PaaS unificado con despliegues automatizados vía Docker.",
+        "ImageKit: CDN global con compresión automática y soporte exclusivo para formatos modernos (WebP, JPG, PNG).",
+        "Resend: Entrega confiable de correos de recuperación de contraseña y bienvenidas institucionales.",
+        "Dolarify: Integración de cotización BCV para sugerencia de precios en bolívares."
+      ]
+    }
+  ]
+}

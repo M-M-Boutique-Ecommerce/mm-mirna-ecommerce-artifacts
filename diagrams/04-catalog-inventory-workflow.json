@@ -1,0 +1,82 @@
+{
+  "schema_version": 2,
+  "diagram_type": "workflow",
+  "meta": {
+    "title": "Gestión de Catálogo, Precios e Inventario Kardex",
+    "animation": "trace",
+    "visual_preset": "signal-flow",
+    "quality_profile": "showcase",
+    "output": "dist/04-catalog-inventory-workflow.html"
+  },
+  "lanes": [
+    { "id": "admin", "label": "Administrador (Angular 17 CMS)" },
+    { "id": "api", "label": "Core API (NestJS + Multer)" },
+    { "id": "imagekit", "label": "CDN & Multimedia (ImageKit)" },
+    { "id": "pricing", "label": "Cotización Divisas (Dolarify API)" },
+    { "id": "database", "label": "Persistencia & Kardex (PostgreSQL)" }
+  ],
+  "phases": [
+    { "id": "p1", "label": "1. Producto y Multimedia", "fromCol": 0, "toCol": 1 },
+    { "id": "p2", "label": "2. Variantes y Precios", "fromCol": 2, "toCol": 3, "variant": "emphasis" },
+    { "id": "p3", "label": "3. Asignación a Kardex", "fromCol": 4, "toCol": 5, "variant": "dashed" }
+  ],
+  "mainPath": [
+    "input_product",
+    "upload_images",
+    "config_variants",
+    "compute_prices",
+    "stock_entry",
+    "kardex_engine",
+    "save_kardex"
+  ],
+  "nodes": [
+    { "id": "input_product", "lane": "admin", "col": 0, "type": "frontend", "label": "Crear Prenda", "sublabel": "Categoría y detalle", "width": 132 },
+    { "id": "upload_images", "lane": "api", "col": 1, "type": "backend", "label": "Subir Imágenes", "sublabel": "Filtro Multer JPG/PNG", "width": 132 },
+    { "id": "store_imagekit", "lane": "imagekit", "col": 1, "type": "cloud", "label": "ImageKit CDN", "sublabel": "Entrega WebP auto", "width": 132 },
+    { "id": "config_variants", "lane": "admin", "col": 2, "type": "frontend", "label": "Configurar Tallas", "sublabel": "Colores, SKU, barras", "width": 132 },
+    { "id": "fetch_bcv", "lane": "pricing", "col": 3, "type": "external", "label": "Tasa BCV", "sublabel": "Dolarify en tiempo real", "width": 132 },
+    { "id": "compute_prices", "lane": "api", "col": 3, "type": "backend", "label": "Fijar Precios", "sublabel": "USD + 20% REF en Bs", "width": 132 },
+    { "id": "stock_entry", "lane": "admin", "col": 4, "type": "frontend", "label": "Entrada Inicial", "sublabel": "Conteo físico en rack", "width": 132 },
+    { "id": "kardex_engine", "lane": "api", "col": 5, "type": "backend", "label": "Motor Kardex", "sublabel": "Transacción TypeORM", "width": 132 },
+    { "id": "save_kardex", "lane": "database", "col": 5, "type": "database", "label": "Libro de Movimientos", "sublabel": "Auditoría IN / OUT", "tag": "ledger", "width": 132 }
+  ],
+  "edges": [
+    { "id": "e1", "from": "input_product", "to": "upload_images", "variant": "emphasis" },
+    { "id": "e2", "from": "upload_images", "to": "store_imagekit", "variant": "dashed", "route": "drop", "fromSide": "bottom", "toSide": "top" },
+    { "id": "e3", "from": "upload_images", "to": "config_variants", "variant": "default" },
+    { "id": "e4", "from": "config_variants", "to": "compute_prices", "variant": "default" },
+    { "id": "e5", "from": "fetch_bcv", "to": "compute_prices", "variant": "dashed", "route": "drop", "fromSide": "top", "toSide": "bottom" },
+    { "id": "e6", "from": "compute_prices", "to": "stock_entry", "variant": "default" },
+    { "id": "e7", "from": "stock_entry", "to": "kardex_engine", "variant": "emphasis" },
+    { "id": "e8", "from": "kardex_engine", "to": "save_kardex", "variant": "emphasis", "route": "drop", "fromSide": "bottom", "toSide": "top" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Optimización Multimedia con ImageKit",
+      "items": [
+        "Las fotos de alta resolución subidas por el admin se almacenan en ImageKit",
+        "ImageKit realiza compresión inteligente al vuelo y sirve en formato WebP de última generación",
+        "Asegura que el catálogo en el móvil del cliente cargue en menos de 1 segundo consumiendo mínimos datos"
+      ]
+    },
+    {
+      "dot": "amber",
+      "title": "Política Cambiaria y Dualidad de Monedas",
+      "items": [
+        "El precio base de cada prenda se define estrictamente en Dólares (USD)",
+        "El sistema consulta diariamente la tasa oficial del Banco Central de Venezuela (BCV) mediante Dolarify",
+        "Aplica automáticamente la política comercial del 20% REF en bolívares para asegurar la rentabilidad del negocio"
+      ]
+    },
+    {
+      "dot": "cyan",
+      "title": "Auditoría Contable de Inventario (Kardex)",
+      "items": [
+        "Cada variante cuenta con su propio historial inmutable de movimientos: IN (compras), OUT (ventas), ADJUST (mermas)",
+        "Los reportes de auditoría son exportables a PDF formal para revisión contable de los socios",
+        "Cero discrepancias entre lo que marca el sistema y la existencia física en boutique"
+      ]
+    }
+  ]
+}
