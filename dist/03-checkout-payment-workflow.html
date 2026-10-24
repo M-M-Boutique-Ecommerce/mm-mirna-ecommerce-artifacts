@@ -5288,8 +5288,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
         <path data-edge-from="approve_order" data-edge-to="kardex_deduct" data-edge-key="6" data-edge-id="e7" data-edge-role="" data-composition-points="714,272;714,464" d="M 714 272 L 714 464" class="a-emphasis" data-animate="edge" style="--step:5" stroke-width="1.8" marker-end="url(#arrowhead-emphasis)"/>
 
         <!-- Nodes -->
-        <g id="node-cart_checkout" data-node-id="cart_checkout" data-node-label="Iniciar Checkout" tabindex="0" role="button" aria-label="Focus Iniciar Checkout, Dirección y método, Cliente (Next.js 15 Storefront) › 1. Creación de Orden" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Dirección y método" data-node-context="Cliente (Next.js 15 Storefront) › 1. Creación de Orden">
-          <title>Iniciar Checkout · Dirección y método · Cliente (Next.js 15 Storefront) › 1. Creación de Orden</title>
+        <g id="node-cart_checkout" data-node-id="cart_checkout" data-node-label="Carrito y Checkout" tabindex="0" role="button" aria-label="Focus Carrito y Checkout, Validación SKU y Stock, Cliente (Next.js 15 Storefront) › 1. Creación de Orden" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Validación SKU y Stock" data-node-context="Cliente (Next.js 15 Storefront) › 1. Creación de Orden">
+          <title>Carrito y Checkout · Validación SKU y Stock · Cliente (Next.js 15 Storefront) › 1. Creación de Orden</title>
           <rect x="48" y="94" width="132" height="52" rx="8" class="c-mask"/>
           <rect x="48" y="94" width="132" height="52" rx="8" class="c-frontend" data-animate="node" style="--step:0" stroke-width="1.5"/>
           <g aria-hidden="true" data-semantic-sigil="frontend" class="semantic-sigil s-frontend" transform="translate(54 100) scale(0.6875)">
@@ -5298,8 +5298,8 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
             <circle cx="4.1" cy="4.8" r=".7" class="sigil-fill"/>
             <circle cx="6.3" cy="4.8" r=".7" class="sigil-fill"/>
           </g>
-          <text data-node-label="" data-detail-anchor="" x="119.8" y="115" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Iniciar Checkout</text>
-          <text data-detail="context" x="114" y="132" class="t-muted" font-size="8" text-anchor="middle">Dirección y método</text>
+          <text data-node-label="" data-detail-anchor="" x="114" y="126.2" class="t-primary" font-size="11" font-weight="600" text-anchor="middle">Carrito y Checkout</text>
+          <text data-detail="context" x="114" y="141.1" class="t-muted" font-size="8" text-anchor="middle">Validación SKU y Stock</text>
         </g>
 
         <g id="node-pay_report" data-node-id="pay_report" data-node-label="Reportar Pago" tabindex="0" role="button" aria-label="Focus Reportar Pago, Nro referencia / capture, Cliente (Next.js 15 Storefront) › 2. Pago y Reporte" aria-pressed="false" data-node-kind="frontend" data-node-sublabel="Nro referencia / capture" data-node-context="Cliente (Next.js 15 Storefront) › 2. Pago y Reporte">
@@ -5597,34 +5597,34 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
       <div class="card">
         <div class="card-header">
           <div class="card-dot emerald"></div>
-          <h3>Métodos de Pago Multidivisa</h3>
+          <h3>Carrito Blindado y Control de Stock</h3>
         </div>
         <ul>
-          <li>Pago Móvil / Transferencia Bancaria (Bs calculados a tasa oficial BCV vía Dolarify)</li>
-          <li>Zelle / Efectivo en divisas (USD directo)</li>
-          <li>El cliente ingresa su referencia o captura para auditoría administrativa inmediata</li>
+          <li>Alertas directas ante variación de precios (▲ subió / ▼ bajó) y recuperación de variantes sin bloqueos huérfanos</li>
+          <li>Prendas agotadas se marcan como no disponibles y bloquean el checkout de forma segura (sin auto-eliminación silenciosa)</li>
+          <li>Garantiza que la orden de compra corresponda de forma estricta a un SKU real y existente</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot amber"></div>
-          <h3>Conciliación Segura en CMS</h3>
+          <h3>Métodos de Pago Multidivisa y Conciliación</h3>
         </div>
         <ul>
-          <li>Los administradores revisan el comprobante desde Angular CMS contra su cuenta bancaria</li>
-          <li>Se previene el fraude validando monto, fecha y número de transacción antes de aprobar</li>
-          <li>La aprobación cambia el estado a &#39;Paid&#39; y activa la preparación en almacén</li>
+          <li>Pago Móvil / Transferencia en Bolívares (referencia oficial BCV con prefijo formal &#39;Bs.&#39;)</li>
+          <li>Zelle / Efectivo en divisas (USD directo)</li>
+          <li>Los administradores concilian el comprobante desde Angular CMS contra su cuenta bancaria antes de aprobar</li>
         </ul>
       </div>
 
       <div class="card">
         <div class="card-header">
           <div class="card-dot cyan"></div>
-          <h3>Integridad de Stock Transaccional</h3>
+          <h3>Integridad de Stock Transaccional (Kardex)</h3>
         </div>
         <ul>
-          <li>El descuento de stock es atómico mediante TypeORM Transactions en PostgreSQL</li>
+          <li>El descuento de stock es atómico mediante TypeORM Transactions en PostgreSQL al aprobar la orden</li>
           <li>Cada variante (color/talla) registra un movimiento Kardex &#39;OUT&#39; con fecha y responsable</li>
           <li>Garantiza que nunca se venda una prenda que no esté físicamente en el inventario</li>
         </ul>

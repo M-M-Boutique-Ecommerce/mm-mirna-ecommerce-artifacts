@@ -33,9 +33,9 @@
     { "id": "input_product", "lane": "admin", "col": 0, "type": "frontend", "label": "Crear Prenda", "sublabel": "Categoría y detalle", "width": 132 },
     { "id": "upload_images", "lane": "api", "col": 1, "type": "backend", "label": "Subir Imágenes", "sublabel": "Filtro Multer JPG/PNG", "width": 132 },
     { "id": "store_imagekit", "lane": "imagekit", "col": 1, "type": "cloud", "label": "ImageKit CDN", "sublabel": "Entrega WebP auto", "width": 132 },
-    { "id": "config_variants", "lane": "admin", "col": 2, "type": "frontend", "label": "Configurar Tallas", "sublabel": "Colores, SKU, barras", "width": 132 },
+    { "id": "config_variants", "lane": "admin", "col": 2, "type": "frontend", "label": "Variantes y Anuncio", "sublabel": "SIMPLE/MIXED, Tallas, Color", "width": 132 },
     { "id": "fetch_bcv", "lane": "pricing", "col": 3, "type": "external", "label": "Tasa BCV", "sublabel": "Dolarify en tiempo real", "width": 132 },
-    { "id": "compute_prices", "lane": "api", "col": 3, "type": "backend", "label": "Fijar Precios", "sublabel": "USD + 20% REF en Bs", "width": 132 },
+    { "id": "compute_prices", "lane": "api", "col": 3, "type": "backend", "label": "Precios Efectivos", "sublabel": "USD, Ofertas y REF Bs.", "width": 132 },
     { "id": "stock_entry", "lane": "admin", "col": 4, "type": "frontend", "label": "Entrada Inicial", "sublabel": "Conteo físico en rack", "width": 132 },
     { "id": "kardex_engine", "lane": "api", "col": 5, "type": "backend", "label": "Motor Kardex", "sublabel": "Transacción TypeORM", "width": 132 },
     { "id": "save_kardex", "lane": "database", "col": 5, "type": "database", "label": "Libro de Movimientos", "sublabel": "Auditoría IN / OUT", "tag": "ledger", "width": 132 }
@@ -53,11 +53,11 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Optimización Multimedia con ImageKit",
+      "title": "Publicaciones SIMPLE / MIXED y Precios Veraces",
       "items": [
-        "Las fotos de alta resolución subidas por el admin se almacenan en ImageKit",
-        "ImageKit realiza compresión inteligente al vuelo y sirve en formato WebP de última generación",
-        "Asegura que el catálogo en el móvil del cliente cargue en menos de 1 segundo consumiendo mínimos datos"
+        "El CMS permite publicar prendas de SKU único (SIMPLE) o anuncios agrupando variantes (MIXED)",
+        "En publicaciones MIXED, el storefront y CMS resuelven el precio a partir del SKU ganador en existencia (el más económico disponible con stock > 0)",
+        "Soporte de prendas en oferta (salePrice) con precio de oferta destacado y regular tachado, eliminando precios en cero ($0.00)"
       ]
     },
     {
@@ -66,7 +66,7 @@
       "items": [
         "El precio base de cada prenda se define estrictamente en Dólares (USD)",
         "El sistema consulta diariamente la tasa oficial del Banco Central de Venezuela (BCV) mediante Dolarify",
-        "Aplica automáticamente la política comercial del 20% REF en bolívares para asegurar la rentabilidad del negocio"
+        "Muestra el precio referencial con prefijo formal 'Bs.', con fallback fail-safe 'No disponible' ante fallas de cotización"
       ]
     },
     {

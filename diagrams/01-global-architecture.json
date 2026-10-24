@@ -138,8 +138,8 @@
       "dot": "emerald",
       "title": "Frontends Modernos & Especializados",
       "items": [
-        "Storefront en Next.js 15: Optimizado para SEO, Core Web Vitals, ultra rápido con React Server Components y Tailwind v4.",
-        "CMS Administrativo en Angular 17: Dashboard robusto para gestión de inventario, catálogo, reportes PDF y auditoría de ventas."
+        "Storefront en Next.js 15: Optimizado para SEO, Core Web Vitals, ultra rápido con React Server Components y Tailwind v4. Selección de SKU estricta y carrito blindado.",
+        "CMS Administrativo en Angular 17: Dashboard robusto para gestión de inventario, publicaciones SIMPLE/MIXED, ofertas, reportes PDF y auditoría de ventas."
       ]
     },
     {

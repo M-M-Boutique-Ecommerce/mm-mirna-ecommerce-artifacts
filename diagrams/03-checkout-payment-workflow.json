@@ -30,7 +30,7 @@
     "kardex_deduct"
   ],
   "nodes": [
-    { "id": "cart_checkout", "lane": "shopper", "col": 0, "type": "frontend", "label": "Iniciar Checkout", "sublabel": "Dirección y método", "width": 132 },
+    { "id": "cart_checkout", "lane": "shopper", "col": 0, "type": "frontend", "label": "Carrito y Checkout", "sublabel": "Validación SKU y Stock", "width": 132 },
     { "id": "create_order", "lane": "api", "col": 1, "type": "backend", "label": "Crear Orden", "sublabel": "Status: Pending", "width": 132 },
     { "id": "notify_order", "lane": "services", "col": 2, "type": "external", "label": "Email de Orden", "sublabel": "Datos bancarios Resend", "width": 132 },
     { "id": "pay_report", "lane": "shopper", "col": 2, "type": "frontend", "label": "Reportar Pago", "sublabel": "Nro referencia / capture", "width": 132 },
@@ -51,27 +51,27 @@
   "cards": [
     {
       "dot": "emerald",
-      "title": "Métodos de Pago Multidivisa",
+      "title": "Carrito Blindado y Control de Stock",
       "items": [
-        "Pago Móvil / Transferencia Bancaria (Bs calculados a tasa oficial BCV vía Dolarify)",
-        "Zelle / Efectivo en divisas (USD directo)",
-        "El cliente ingresa su referencia o captura para auditoría administrativa inmediata"
+        "Alertas directas ante variación de precios (▲ subió / ▼ bajó) y recuperación de variantes sin bloqueos huérfanos",
+        "Prendas agotadas se marcan como no disponibles y bloquean el checkout de forma segura (sin auto-eliminación silenciosa)",
+        "Garantiza que la orden de compra corresponda de forma estricta a un SKU real y existente"
       ]
     },
     {
       "dot": "amber",
-      "title": "Conciliación Segura en CMS",
+      "title": "Métodos de Pago Multidivisa y Conciliación",
       "items": [
-        "Los administradores revisan el comprobante desde Angular CMS contra su cuenta bancaria",
-        "Se previene el fraude validando monto, fecha y número de transacción antes de aprobar",
-        "La aprobación cambia el estado a 'Paid' y activa la preparación en almacén"
+        "Pago Móvil / Transferencia en Bolívares (referencia oficial BCV con prefijo formal 'Bs.')",
+        "Zelle / Efectivo en divisas (USD directo)",
+        "Los administradores concilian el comprobante desde Angular CMS contra su cuenta bancaria antes de aprobar"
       ]
     },
     {
       "dot": "cyan",
-      "title": "Integridad de Stock Transaccional",
+      "title": "Integridad de Stock Transaccional (Kardex)",
       "items": [
-        "El descuento de stock es atómico mediante TypeORM Transactions en PostgreSQL",
+        "El descuento de stock es atómico mediante TypeORM Transactions en PostgreSQL al aprobar la orden",
         "Cada variante (color/talla) registra un movimiento Kardex 'OUT' con fecha y responsable",
         "Garantiza que nunca se venda una prenda que no esté físicamente en el inventario"
       ]
